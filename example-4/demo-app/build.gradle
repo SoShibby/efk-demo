@@ -1,0 +1,53 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+group = 'com.github.demo'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+buildscript {
+    ext {
+        springBootVersion = '2.1.3.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath 'net.researchgate:gradle-release:2.4.0'
+    }
+}
+
+dependencies {
+    implementation('org.springframework.boot:spring-boot-starter-web')
+    implementation('org.springframework.boot:spring-boot-starter-logging')
+    compile 'net.logstash.logback:logstash-logback-encoder:5.3'
+    compile 'ch.qos.logback:logback-classic:1.2.3'
+	compile 'io.opentracing.contrib:opentracing-spring-cloud-starter:0.2.1'
+    compile 'com.uber.jaeger:jaeger-core:0.27.0'
+    compile 'org.owasp:security-logging-log4j:1.1.6'
+    compile 'org.springframework.boot:spring-boot-starter-security'
+    compile 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    compile 'org.thymeleaf.extras:thymeleaf-extras-springsecurity4:2.1.3.RELEASE'
+}
+
+apply from: "versioning.gradle"
+
+springBoot {
+    buildInfo {
+        properties {
+            additional = [
+                "commit-id": getLatestCommitId(),
+                "git-group-path": getGitGroupPath(),
+                "git-project-name": getGitProjectName()
+            ]
+        }
+    }
+}

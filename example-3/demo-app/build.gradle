@@ -1,0 +1,47 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+group = 'com.github.demo'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+buildscript {
+    ext {
+        springBootVersion = '2.1.0.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath 'net.researchgate:gradle-release:2.4.0'
+    }
+}
+
+dependencies {
+    implementation('org.springframework.boot:spring-boot-starter-web')
+    implementation('org.springframework.boot:spring-boot-starter-logging')
+    compile group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: '5.3'
+    compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
+}
+
+apply from: "versioning.gradle"
+
+springBoot {
+    buildInfo {
+        properties {
+            additional = [
+                "commit-id": getLatestCommitId(),
+                "git-group-path": getGitGroupPath(),
+                "git-project-name": getGitProjectName()
+            ]
+        }
+    }
+}

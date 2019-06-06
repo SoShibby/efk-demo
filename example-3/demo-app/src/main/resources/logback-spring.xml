@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <property resource="META-INF/build-info.properties" scope="context"/>
+
+    <!-- Write all our logs to standard output. This output will then be picked up by the logger defined in the docker-compose file and sent to fluentd -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <!-- Output logs as JSON -->
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+            <fieldNames>
+                <timestamp>timestamp</timestamp>
+                <message>msg</message>
+                <thread>[ignore]</thread>
+                <levelValue>[ignore]</levelValue>
+                <logger>logger</logger>
+                <version>[ignore]</version>
+            </fieldNames>
+        </encoder>
+    </appender>
+
+    <logger name="com.github.demo" level="info"/>
+
+    <root level="info">
+        <appender-ref ref="STDOUT"/>
+    </root>
+
+</configuration>

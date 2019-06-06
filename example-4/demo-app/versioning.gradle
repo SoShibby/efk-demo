@@ -1,0 +1,67 @@
+apply plugin: 'net.researchgate.release'
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'net.researchgate:gradle-release:2.4.0'
+    }
+}
+
+import net.researchgate.release.cli.Executor
+
+// Get the latest commit id in the current HEAD.
+ext.getLatestCommitId = { ->
+    def executor = new Executor(logger)
+    def commitId = executor.exec(['git', 'rev-parse', 'HEAD'], errorMessage: 'Error while getting last git commit id.')
+    return commitId.replaceAll('\n', '');
+}
+
+// Get the git group path.
+// Example: "https://gitlab.com/issue-reporter/issue-reporter-core/issue-reporter-core.git
+// Will return "issue-reporter/issue-reporter-core".
+ext.getGitGroupPath = { ->
+    def executor = new Executor(logger)
+    def groupPath = executor.exec(['git', 'config', '--get', 'remote.origin.url'], errorMessage: 'Error while getting git group path.')
+
+    // If we don't find http or https in the group path then we probably didn't get a valid result back from the git command,
+    // it might not be a git repo? Can it be something else than http/https? What about ssh?
+    if (!groupPath.contains('http') && !groupPath.contains('https')) {
+        throw new GradleException("Failed to find git group. Expected git command to return http or https in git origin url. But got: " + groupPath);
+    }
+
+    groupPath = groupPath.replaceAll('https://', '');
+    groupPath = groupPath.replaceAll('http://', '');
+
+    // Get the starting point of the git group.
+    if (groupPath.contains('/')) {
+        groupPath = groupPath.substring(groupPath.indexOf('/') + 1);
+    }
+
+    // Get the ending point of the git group (i.e. remove the git project name).
+    if (groupPath.contains('/')) {
+        groupPath = groupPath.substring(0, groupPath.lastIndexOf('/'));
+    }
+
+    return groupPath;
+}
+
+ext.getGitProjectName = { ->
+    def executor = new Executor(logger)
+    def projectName = executor.exec(['git', 'config', '--get', 'remote.origin.url'], errorMessage: 'Error while getting git project name.')
+
+    // If we don't find http or https in the group path then we probably didn't get a valid result back from the git command,
+    // it might not be a git repo? Can it be something else than http/https? What about ssh?
+    if (!projectName.contains('http') && !projectName.contains('https')) {
+        throw new GradleException("Failed to find git group. Expected git command to return http or https in git origin url. But got: " + groupPath);
+    }
+
+    // Get the starting point of git project name.
+    if (projectName.contains('/')) {
+        projectName = projectName.substring(projectName.lastIndexOf('/') + 1);
+    }
+
+    // Remove the ending '.git' from the project name.
+    return projectName.substring(0, projectName.length() - 5);
+}
