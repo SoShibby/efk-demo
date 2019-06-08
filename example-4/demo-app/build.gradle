@@ -26,8 +26,10 @@ buildscript {
 }
 
 dependencies {
-    implementation('org.springframework.boot:spring-boot-starter-web')
-    implementation('org.springframework.boot:spring-boot-starter-logging')
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    compile 'io.micrometer:micrometer-registry-prometheus'
+    compile 'org.springframework.boot:spring-boot-starter-logging'
     compile 'net.logstash.logback:logstash-logback-encoder:5.3'
     compile 'ch.qos.logback:logback-classic:1.2.3'
 	compile 'io.opentracing.contrib:opentracing-spring-cloud-starter:0.2.1'

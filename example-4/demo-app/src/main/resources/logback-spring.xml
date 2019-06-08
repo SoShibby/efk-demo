@@ -20,10 +20,19 @@
         </encoder>
     </appender>
 
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>
+                %d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n
+            </Pattern>
+        </layout>
+    </appender>
+
     <logger name="com.github.demo" level="info"/>
 
-    <root level="error">
+    <root level="info">
         <appender-ref ref="STDOUT"/>
+        <!--<appender-ref ref="CONSOLE"/>-->
     </root>
 
 </configuration>

@@ -38,7 +38,10 @@ docker-compose up demo-app
 ### Kibana Scripted Fields
 
 open-in-vscode: return doc['log.logger.keyword'].size() > 0 ? "vscode://file/c:/repo/" + doc['log.build.git-project-name.keyword'].value + doc['log.project-relative-path.keyword'].value + "/" + doc['log.build.name.keyword'].value + "/src/main/java/" + doc['log.logger.keyword'].value.replace(".", "/") + ".java:" + String.valueOf(doc['log.caller_line_number'].value) : "";
+
 git-checkout-revision: return doc['log.build.commit-id.keyword'].size() > 0 ? "git checkout " + doc['log.build.commit-id.keyword'].value : "";
+
 git-clone: return doc['log.build.git-group-path.keyword'].size() > 0 ? "https://github.com/" + doc['log.build.git-group-path.keyword'].value + "/" + doc['log.build.git-project-name.keyword'].value + ".git" : "";
-open-in-github: return doc['log.logger.keyword'].size() > 0 ? "https://github.com/" + doc['log.build.git-group-path.keyword'].value + "/" + doc['log.build.git-project-name.keyword'].value + "/blob/" + doc['log.build.commit-id.keyword'].value + doc['log.project-relative-path.keyword'].value + "/" + doc['log.build.name.keyword'].value + "/src/main/java/" + doc['log.logger.keyword'].value.replace(".", "/") + ".java" : "";
+
+open-in-github: return doc['log.logger.keyword'].size() > 0 ? "https://github.com/" + doc['log.build.git-group-path.keyword'].value + "/" + doc['log.build.git-project-name.keyword'].value + "/blob/" + doc['log.build.commit-id.keyword'].value + doc['log.project-relative-path.keyword'].value + "/" + doc['log.build.name.keyword'].value + "/src/main/java/" + doc['log.logger.keyword'].value.replace(".", "/") + ".java#L" + String.valueOf(doc['log.caller_line_number'].value) : "";
 

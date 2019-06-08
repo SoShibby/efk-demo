@@ -28,7 +28,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/favicon.ico",
                         "/js/**",
                         "/css/**",
-                        "/img/**").permitAll()
+                        "/img/**",
+                        "/actuator/**").permitAll()
                 .antMatchers("/secure/**").hasRole("USER")
                 .anyRequest().authenticated()
             .and()
