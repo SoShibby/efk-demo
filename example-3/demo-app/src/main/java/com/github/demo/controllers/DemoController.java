@@ -21,4 +21,10 @@ public class DemoController {
         return "Pong";
     }
 
+    @RequestMapping("/error")
+    public String error() {
+        log.info("Throwing error");
+        throw new RuntimeException("Oops an error occurred.");
+    }
+
 }
