@@ -33,4 +33,4 @@ services:
       driver: "fluentd"
       options:
        tag: "spring-boot.demoapp"
-       fluentd-address: "192.168.99.110:24224"
+       fluentd-address: "192.168.99.100:24224"

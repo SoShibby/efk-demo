@@ -1,3 +1,12 @@
+## Check Docker connection
+
+Run the following command to check that the connection to your Docker virtual machine is working as expected.
+```sh
+docker version
+```
+
+If you got an error when executing the command then you have either not created your Docker virtual machine or you have forgot to set the environment variables. See the first step in the documentation in example-1 on how to fix this.
+
 ## Build Spring-boot application
 
 ```sh
@@ -10,6 +19,19 @@
 docker-compose build
 ```
 
+## Docker Machine IP
+
+Get the ip of your Docker virtual machine by running:
+```sh
+docker-machine ip
+```
+
+You will need this ip in the next steps.
+
+## Set Fluentd address
+
+Open the docker-compose.yml file and replace the string "YOUR-DOCKER-MACHINE-IP" with the ip of your docker-machine (see previous step on how to get the ip).
+
 ## Start services
 
 ```sh
@@ -18,11 +40,11 @@ docker-compose up
 
 ## Kibana
 
-Open the Kibana dashboard at http://192.168.99.110:5601. If you are presented with a login form this means that Kibana haven't connected with elasticsearch yet. This can be because of an error or that elasticsearch haven't started yet.
+Open the Kibana dashboard at http://YOUR-DOCKER-MACHINE-IP:5601. If you are presented with a login form this means that Kibana haven't connected with elasticsearch yet. This can be because of an error or that elasticsearch haven't started yet.
 
 ## Send request
 
-Visit http://192.168.99.110:8090/api/ping and row with the field name "log.msg" should show up with the value "Pong" in Kibana.
+Visit http://YOUR-DOCKER-MACHINE-IP:8090/api/ping and row with the field name "log.msg" should show up with the value "Pong" in Kibana.
 
 ### Debugging
 
